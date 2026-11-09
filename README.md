@@ -99,21 +99,48 @@ P0 只约束**新写的代码**，老代码不返工（P0 第 10 条就是这么
 
 ## 接入第二台电脑
 
-仓库地址：**https://github.com/xiangbiaoqiao/agent-rules**（公开库，clone 无需认证）
+仓库地址：**https://github.com/xiangbiaoqiao/agent-rules**（私有库，clone 需要认证）
 
 前提：装好 **Python 3** 和 **Git**（`python --version` / `git --version` 能出版本号）。
 
 ### 方式一：git（推荐，长期同步）
 
+#### 1.1 先过认证（私有库必做，二选一）
+
+**A. gh CLI（推荐，配一次长期有效）**
+
 ```bash
-# 1. 克隆到家目录（路径必须是 ~/.agent-rules，sync.py 认这个位置）
-#    公开库，不需要任何认证
+# 安装
+winget install --id GitHub.cli      # Windows
+brew install gh                     # macOS
+
+# 登录：选 HTTPS，浏览器点一下授权
+gh auth login
+```
+
+`gh auth login` 会顺手配好 git 的凭证助手，之后 `clone` / `pull` / `push` 都不再问账号密码，
+凭证存在系统凭据管理器里，重启也有效。
+
+**B. PAT（不想装 gh 时）**
+
+GitHub → Settings → Developer settings → Personal access tokens 生成一个带 `repo` 权限的令牌：
+
+```bash
+git clone https://<你的token>@github.com/xiangbiaoqiao/agent-rules.git ~/.agent-rules
+```
+
+> 缺点：token 会明文留在 `.git/config`，且有过期时间；用完别把仓库目录整体分享出去。
+
+#### 1.2 克隆并分发
+
+```bash
+# 克隆到家目录（路径必须是 ~/.agent-rules，sync.py 认这个位置）
 git clone https://github.com/xiangbiaoqiao/agent-rules.git ~/.agent-rules
 
-# 2. 分发到各工具
+# 分发到各工具
 python ~/.agent-rules/sync.py
 
-# 3. 验证
+# 验证
 python ~/.agent-rules/sync.py --check
 ```
 
@@ -156,5 +183,5 @@ git add -A && git commit -m "更新规则：xxx" && git push
 
 | 日期 | 内容 |
 |---|---|
-| 2026-11-09 | 加 git 版本管理（`.gitignore` / `.gitattributes`，统一 LF）；修掉 `sync.py` 与 SKILL.md 里写死的 `C:\Users\27188` 路径；WorkBuddy 技能纳入 `kind=copy` 分发；`CANON` 改为按脚本位置定位；补「接入第二台电脑」章节 |
+| 2026-11-09 | 加 git 版本管理（`.gitignore` / `.gitattributes`，统一 LF）；修掉 `sync.py` 与 SKILL.md 里写死的 `C:\Users\27188` 路径；WorkBuddy 技能纳入 `kind=copy` 分发；`CANON` 改为按脚本位置定位；补「接入第二台电脑」章节；**仓库定为私有库**，补 gh / PAT 两种认证方式 |
 
