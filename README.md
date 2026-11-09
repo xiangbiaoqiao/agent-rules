@@ -93,3 +93,64 @@ P2  语言/框架通行惯例
 ```
 
 P0 只约束**新写的代码**，老代码不返工（P0 第 10 条就是这么定的）。
+
+---
+
+## 接入第二台电脑
+
+前提：装好 **Python 3** 和 **Git**（`python --version` / `git --version` 能出版本号）。
+
+### 方式一：git（推荐，长期同步）
+
+```bash
+# 1. 克隆到家目录（路径必须是 ~/.agent-rules，sync.py 认这个位置）
+git clone <仓库地址> ~/.agent-rules
+
+# 2. 分发到各工具
+python ~/.agent-rules/sync.py
+
+# 3. 验证
+python ~/.agent-rules/sync.py --check
+```
+
+之后两台机器保持同步：
+
+```bash
+cd ~/.agent-rules
+git pull          # 干活前先拉
+# 改了 CODING.md 之后
+git add -A && git commit -m "更新规则：xxx" && git push
+```
+
+> 改了规则一定要 `commit + push`，否则另一台机器永远是旧的。
+> 建议养成「改完 CODING.md → sync.py → commit push」一条龙。
+
+### 方式二：压缩包（没网 / 不方便建仓库时）
+
+1. 在**有规范的那台**上打包（`.git` 可带可不带）：
+   ```bash
+   cd ~ && tar -czf agent-rules.tar.gz .agent-rules
+   ```
+2. 拷到另一台（U 盘 / 微信 / 内网共享都行），解压到 `C:\Users\<你的用户名>\`：
+   ```bash
+   cd ~ && tar -xzf agent-rules.tar.gz
+   ```
+3. 跑 `python ~/.agent-rules/sync.py`
+
+> 这种方式下次改规则还得再拷一遍，只适合应急。
+
+### 跨机器注意事项
+
+- **路径全部用 `Path.home()` 动态解析**，两台机器用户名不同也没问题（`sync.py` 和 SKILL.md 里原先写死的绝对路径已改成动态 / `~/`）
+- 目标工具（Codex / Cursor / Claude Code ...）**这台机器上没装的话，sync 会自动建目录**，不影响使用；装了哪个就用哪个
+- **不要把 `~/.agent-rules` 放进 OneDrive / 坚果云同步盘**：`.git` 在同步盘上冲突起来很难修
+- 旧机器的入口文件不用删，各自独立生成
+
+---
+
+## 修改记录
+
+| 日期 | 内容 |
+|---|---|
+| 2026-11-09 | 加 git 版本管理（`.gitignore` / `.gitattributes`，统一 LF）；修掉 `sync.py` 与 SKILL.md 里写死的 `C:\Users\27188` 路径；补「接入第二台电脑」章节 |
+

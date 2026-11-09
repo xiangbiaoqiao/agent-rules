@@ -1,0 +1,6 @@
+# 规范文件统一用 LF，避免两台机器换行符不同导致全文件 diff
+* text=auto eol=lf
+
+# Windows 批处理必须保留 CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
