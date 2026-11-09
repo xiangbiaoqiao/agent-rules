@@ -25,7 +25,7 @@ display_name: "写代码规范（多工具统一）"
 
 - 优先级（P0 用户规则 > P1 项目现状 > P2 语言惯例）
 - 动手前 60 秒的读现场四步
-- **P0 十七条硬规则**（方法 ≤80 行、主方法叙事性、拆分三问、链式适度、嵌套 ≤2 层卫语句、命名后缀、集合返回空、日志占位符、常量与注释、不重排别人代码、**对象变量用类型名、类名后缀表达分层、工具先找现成的、现代 API 优先、并发按场景、基本类型与包装类各用其所、性能先定位 IO**）
+- **P0 二十三条硬规则速查**（方法 ≤80 行、叙事性、拆分三问、链式适度、嵌套 ≤2 层、命名后缀、集合返回空、日志异常、常量与注释、不重排别人代码、对象变量用类型名、类名后缀分层、工具先找现成、现代 API 优先、并发按场景、包装类与基本类型、循环与性能、数据载体分包、不建内部类、协议取值用枚举、参数上下文对象、SQL 落 XML、不 Map 套 Map）
 - 八条通用铁律
 - 禁裸 `List<Map>` / `dict` / `any`
 - 验证纪律（各语言最低验证动作 + 汇报三态）
@@ -37,8 +37,13 @@ display_name: "写代码规范（多工具统一）"
 
 | 场景 | 分册 |
 |---|---|
+| 要细究某条 P0、判断写法是否违规 | `p0-detail.md` |
 | Java / Spring Boot / MyBatis-Plus | `java-backend.md` |
+| JE 平台数据访问、Controller 写法 | `je-platform.md` |
 | 写/改 SQL、跨库转换 | `sql.md`（方言 `sql-dialects.md`） |
+| 写/改 Vue 2 前端页面 | `frontend-vue2.md` |
+| 新增或改接口 | `api-design.md` |
+| 提交代码、写 commit message | `git-convention.md` |
 | 链式 / Stream / Optional | `style-chain.md` |
 | 要看反面案例、验证命令细节 | `anti-patterns.md` |
 | 用户要求 review diff/MR/PR | `review.md` |
