@@ -99,13 +99,16 @@ P0 只约束**新写的代码**，老代码不返工（P0 第 10 条就是这么
 
 ## 接入第二台电脑
 
-仓库地址：**https://github.com/xiangbiaoqiao/agent-rules**（私有库，clone 需要认证）
+仓库地址：**https://github.com/xiangbiaoqiao/agent-rules**（公开库，clone 无需认证）
 
 前提：装好 **Python 3** 和 **Git**（`python --version` / `git --version` 能出版本号）。
 
 ### 方式一：git（推荐，长期同步）
 
-#### 1.1 先过认证（私有库必做，二选一）
+#### 1.1 认证（公开库可跳过）
+
+> 当前是公开库，**不需要任何认证**，直接跳到 1.2。
+> 若以后改为私有库，按下面任选一种配置即可。
 
 **A. gh CLI（推荐，配一次长期有效）**
 
@@ -183,5 +186,5 @@ git add -A && git commit -m "更新规则：xxx" && git push
 
 | 日期 | 内容 |
 |---|---|
-| 2026-11-09 | 加 git 版本管理（`.gitignore` / `.gitattributes`，统一 LF）；修掉 `sync.py` 与 SKILL.md 里写死的 `C:\Users\27188` 路径；WorkBuddy 技能纳入 `kind=copy` 分发；`CANON` 改为按脚本位置定位；补「接入第二台电脑」章节；**仓库定为私有库**，补 gh / PAT 两种认证方式 |
+| 2026-11-09 | 加 git 版本管理（`.gitignore` / `.gitattributes`，统一 LF）；修掉 `sync.py` 与 SKILL.md 里写死的 `C:\Users\27188` 路径；WorkBuddy 技能纳入 `kind=copy` 分发；`CANON` 改为按脚本位置定位；补「接入第二台电脑」章节；**仓库定为公开库**（曾切私有实测认证流程，README 保留 gh / PAT 两种方式备查） |
 
