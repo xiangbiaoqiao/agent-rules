@@ -9,6 +9,7 @@
 ├── CODING.md            ★ 唯一权威，改这里
 ├── sync.py              分发脚本
 ├── README.md            本文件
+├── templates/           整文件复制的模板（workbuddy-SKILL.md）
 ├── references/          深主题分册（按需读）
 │   ├── java-backend.md
 │   ├── sql.md / sql-dialects.md
@@ -29,7 +30,7 @@
 | **Claude Code** | `~/.claude/CLAUDE.md` | 全文内嵌（全局记忆） | ✅ 确认 |
 | **Cursor** | `~/.cursor/rules/coding-standard.mdc` | 全文内嵌 + `alwaysApply: true` | ✅ 确认 |
 | **Trae CN** | `~/.trae-cn/memory/user_profile.md` | 追加指针，原文保留 | ✅ 确认（UI 规则框另见下） |
-| **WorkBuddy** | `~/.workbuddy/skills/coding-standard/SKILL.md` | 技能路由到 CODING.md | ✅ 确认 |
+| **WorkBuddy** | `~/.workbuddy/skills/coding-standard/SKILL.md` | 整文件复制（模板 `templates/workbuddy-SKILL.md`） | ✅ 确认 |
 | **CodeBuddy CN** | `~/.codebuddy/skills/coding-standard/SKILL.md` | 技能路由（同 WorkBuddy 生态） | ✅ 结构确认 |
 | **OpenCode** | `~/.config/opencode/AGENTS.md` | 全文内嵌 | ✅ 已确认 CLI 读 `AGENTS.md` |
 | **ZCode** | `~/.zcode/AGENTS.md` | 全文内嵌 | ⚠️ 未验证 |
@@ -152,5 +153,5 @@ git add -A && git commit -m "更新规则：xxx" && git push
 
 | 日期 | 内容 |
 |---|---|
-| 2026-11-09 | 加 git 版本管理（`.gitignore` / `.gitattributes`，统一 LF）；修掉 `sync.py` 与 SKILL.md 里写死的 `C:\Users\27188` 路径；补「接入第二台电脑」章节 |
+| 2026-11-09 | 加 git 版本管理（`.gitignore` / `.gitattributes`，统一 LF）；修掉 `sync.py` 与 SKILL.md 里写死的 `C:\Users\27188` 路径；WorkBuddy 技能纳入 `kind=copy` 分发；`CANON` 改为按脚本位置定位；补「接入第二台电脑」章节 |
 

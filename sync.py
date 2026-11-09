@@ -24,7 +24,9 @@ except Exception:
     pass
 
 HOME = Path.home()
-CANON = HOME / ".agent-rules" / "CODING.md"
+# 规则本体按脚本自身位置定位：仓库放哪都能跑，不强制必须在 ~/.agent-rules
+RULE_DIR = Path(__file__).resolve().parent
+CANON = RULE_DIR / "CODING.md"
 
 BEGIN_TPL = "<!-- agent-rules:begin hash={hash} | 自动生成，勿手改；改 CODING.md 后重跑 sync.py -->"
 BEGIN_RE_HEAD = "<!-- agent-rules:begin"
@@ -94,6 +96,12 @@ TARGETS = [
             "# 写代码规范\n\n"
             f"规则本体不在本文件，在 `{CANON}`。\n\n"
         ),
+    },
+    {
+        "name": "WorkBuddy",
+        "path": HOME / ".workbuddy" / "skills" / "coding-standard" / "SKILL.md",
+        "kind": "copy",
+        "source": RULE_DIR / "templates" / "workbuddy-SKILL.md",
     },
     {
         "name": "ZCode",
@@ -187,6 +195,20 @@ def strip_managed(existing: str) -> str:
     return "\n".join(lines[:start] + lines[end + 1:])
 
 
+def sync_copy_target(target: dict, check_only: bool) -> str:
+    """整文件复制型目标（技能文件等无托管区块的文件），返回状态文本。"""
+    path: Path = target["path"]
+    payload = target["source"].read_text(encoding="utf-8").rstrip() + "\n"
+    exists = path.exists()
+    if exists and path.read_text(encoding="utf-8") == payload:
+        return "最新"
+    if check_only:
+        return "待更新" if exists else "新建"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(payload, encoding="utf-8", newline="\n")
+    return "已写入" if exists else "新建"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true", help="只检查是否过期")
@@ -206,9 +228,21 @@ def main() -> int:
     block = build_block(text)
     pointer = build_pointer(h)
 
+    expected_dir = HOME / ".agent-rules"
+    if RULE_DIR != expected_dir:
+        print(f"⚠️  规范目录在 {RULE_DIR}，不在约定的 {expected_dir}")
+        print("   SKILL.md 里的 ~/.agent-rules 指针会失效，建议把仓库放到约定的家目录位置。\n")
+
     rows, stale = [], 0
     for t in TARGETS:
         p: Path = t["path"]
+        if t["kind"] == "copy":
+            status = sync_copy_target(t, args.check)
+            if status == "待更新":
+                stale += 1
+            rows.append((t["name"], str(p), status, t.get("note", "")))
+            continue
+
         payload = block if t["kind"] == "block" else pointer
         exists = p.exists()
         existing = p.read_text(encoding="utf-8") if exists else ""
