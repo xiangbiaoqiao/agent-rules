@@ -21,7 +21,7 @@ P2  语言/框架通行惯例
 
 1. **判型**：语言、框架、项目类型。
 2. **读现场**：读被改文件**全文** + 同目录 2–3 个同类文件。看：包结构、命名习惯、返回包装类、异常处理、日志写法、注入方式、有没有可复用工具类。
-3. **查依赖与主流用法**：判断「项目用不用某个库 / 注解 / 工具类」时，看 **依赖声明（pom.xml / build.gradle / package.json）+ 全仓使用数**，不能只看当前模块。**新模块零使用 ≠ 项目约定**——2026-11 在 je-ai 漏用 Lombok / hutool 就是只看模块吃的亏。
+3. **查依赖与主流用法**：判断「项目用不用某个库 / 注解 / 工具类」时，看 **依赖声明（pom.xml / build.gradle / package.json）+ 全仓使用数**，不能只看当前模块。**新模块零使用 ≠ 项目约定**——2026-11 就因为只看单个新模块，漏用了项目已在用的 Lombok / hutool。
 4. **只读该读的分册**（见第 8 节索引）。
 5. **先报方案**：一句话说清「改哪几个文件、为什么、影响面」。**超过 3 个文件必须先说。**
 6. **动手**。
@@ -129,7 +129,7 @@ P2  语言/框架通行惯例
 ### 13. 工具先找现成的，别手写
 查找顺序：**项目内已有 util → JDK / 框架自带 → hutool / Guava / Apache Commons → 最后才自己写**。
 
-- 本仓库 `je-web` 已依赖 **hutool 5.8.12**：`StrUtil`、`NumberUtil`、`LocalDateTimeUtil`（5.8 还没有 `LocalDateUtil`）、`CollectionUtil`、`JSONUtil`、`BeanUtil`、`IoUtil`
+- 本仓库后端已依赖 **hutool 5.8.12**：`StrUtil`、`NumberUtil`、`LocalDateTimeUtil`（5.8 还没有 `LocalDateUtil`）、`CollectionUtil`、`JSONUtil`、`BeanUtil`、`IoUtil`
 - 平台自带 `com.je.core.util.StringUtil`、`O2S` 等，别在业务里重写 `isEmpty` / 类型转换
 - 判据：**要写的方法在 hutool / Commons 里有同名实现 → 用现成的**；只有带业务语义的（本项目特有口径）才进 `XxxUtil`
 - 其他语言同理：Python 用 `pathlib` / `itertools` / `collections`，JS 用原生 `Array.prototype.*` 或项目已装的 lodash；禁止手写 `isBlank` / `deepClone` / `formatDate`
@@ -240,11 +240,11 @@ report/
 Java 源码（含 Service / Util / 查询组件）里**禁止出现拼出来的 SQL**——字符串 `+` 拼 WHERE、
 `escapeSqlLiteral` 手工注入防护都算。查库只有两条路：
 1. **MyBatis mapper**：Dao 接口（`@Mapper`，包路径进 MapperScannerConfigurer 的 basePackage，
-   本仓库 je-ai 是 `com.pigdata.ai.dao`）+ `resources/mapper/XxxDao.xml`；SQL 参数一律 `#{}` 占位
+   本仓库业务模块是 `com.example.order.dao`）+ `resources/mapper/XxxDao.xml`；SQL 参数一律 `#{}` 占位
 2. **单表动态条件**：`ConditionsWrapper` 链式（见第 5 节）
 - 简单的一次性查询**也要落 XML**——「就拼一次」是烂掉的开端；日期等外部值必须走 `#{}` 参数，
   不许字符串连接进 SQL
-- 历史基建（如 `ProductionReportJdbcSupport` 的拼接执行）保持原样不改，但**新代码禁止新增调用**
+- 历史基建（如某个遗留的 Jdbc 拼接执行类）保持原样不改，但**新代码禁止新增调用**
 
 ### 23. 数据结构不用 Map 套 Map，用实体类（2026-11-06 新增）
 `List<Map<String, Object>>` / `Map<String, Map<String, Object>>` 装**业务数据**一律不合格，
@@ -421,6 +421,6 @@ SQL: EXECUTIVENAME IS NOT NULL AND EXECUTIVENAME <> ? ORDER BY jobName ASC
 
 ## 9. 边界
 
-- 报表 `.rpx` 解析 → 用 `raqsoft-rpx-reader`（润乾格式专用），本文只约束里面的 SQL 写法。
+- 专用报表模板（如 `.rpx`）解析 → 用对应的报表解析工具，本文只约束里面的 SQL 写法。
 - Office 文档/表格生成 → 用对应 Office 技能。
 - 本文管：**代码怎么写、怎么改、怎么审、怎么验证**。
