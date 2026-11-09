@@ -99,13 +99,16 @@ P0 只约束**新写的代码**，老代码不返工（P0 第 10 条就是这么
 
 ## 接入第二台电脑
 
+仓库地址：**https://github.com/xiangbiaoqiao/agent-rules**（公开库，clone 无需认证）
+
 前提：装好 **Python 3** 和 **Git**（`python --version` / `git --version` 能出版本号）。
 
 ### 方式一：git（推荐，长期同步）
 
 ```bash
 # 1. 克隆到家目录（路径必须是 ~/.agent-rules，sync.py 认这个位置）
-git clone <仓库地址> ~/.agent-rules
+#    公开库，不需要任何认证
+git clone https://github.com/xiangbiaoqiao/agent-rules.git ~/.agent-rules
 
 # 2. 分发到各工具
 python ~/.agent-rules/sync.py
